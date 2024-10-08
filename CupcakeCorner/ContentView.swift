@@ -8,44 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var username = ""
+    @State private var email = ""
+    
+    var disableForm: Bool {
+        username.count < 5 || email.count < 5
+    }
+
     var body: some View {
-        VStack {
-            AsyncImage(url: URL(string: "https://hws.dev/img/logo.png")) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
-                ProgressView()
+        Form {
+            Section {
+                TextField("Username", text: $username)
+                TextField("Email", text: $email)
             }
-            .frame(width: 200, height: 200)
-            AsyncImage(url: URL(string: "https://upload.wikimedia.org/wikipedia/en/8/89/Armored_Core_VI_Fires_of_Rubicon_cover.jpg")) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                } else if phase.error != nil {
-                    Text("Hubo un error al cargar la imagen.")
-                } else {
-                    ProgressView()
+
+            Section {
+                Button("Create account") {
+                    print("Creating account…")
                 }
             }
-            .frame(width: 200, height: 200)
-            AsyncImage(url: URL(string: "https://upload.wikimedia.org/wikipedia/en/8/89/Armored_Core_VI_Fires_of_Rubicon_cover_art.jpg")) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                } else if phase.error != nil {
-                    Text("Hubo un error al cargar la imagen.")
-                } else {
-                    ProgressView()
-                }
-            }
-            .frame(width: 200, height: 200)
-
-
+//            .disabled(username.isEmpty || email.isEmpty)
+            .disabled(disableForm)
         }
-        .padding()
     }
 }
 
