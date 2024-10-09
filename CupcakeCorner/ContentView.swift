@@ -7,32 +7,28 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @State private var username = ""
-    @State private var email = ""
-    
-    var disableForm: Bool {
-        username.count < 5 || email.count < 5
+@Observable
+class User: Codable {
+    enum CodingKeys: String, CodingKey {
+        case _name = "name"
     }
 
-    var body: some View {
-        Form {
-            Section {
-                TextField("Username", text: $username)
-                TextField("Email", text: $email)
-            }
+    var name = "Taylor"
+}
 
-            Section {
-                Button("Create account") {
-                    print("Creating account…")
-                }
-            }
-//            .disabled(username.isEmpty || email.isEmpty)
-            .disabled(disableForm)
-        }
+struct ContentView: View {
+    var body: some View {
+        Button("Encode Taylor", action: encodeTaylor)
+    }
+
+    func encodeTaylor() {
+        let data = try! JSONEncoder().encode(User())
+        let str = String(decoding: data, as: UTF8.self)
+        print(str)
     }
 }
 
 #Preview {
     ContentView()
 }
+
